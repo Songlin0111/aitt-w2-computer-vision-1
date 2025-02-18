@@ -1,28 +1,44 @@
 import gab.opencv.*;
 import processing.video.*;
+import java.awt.Rectangle;
+
 
 OpenCV opencv;
 Capture cam;
+Rectangle[] faces;
 
 void setup() 
 {
-  size(10, 10);
+  //size(10, 10);
   
-  initCamera();
-  opencv = new OpenCV(this, cam.width, cam.height);
+  //initCamera();
+  //opencv = new OpenCV(this, cam.width, cam.height);
   
-  surface.setResizable(true);
-  surface.setSize(opencv.width, opencv.height);
+  //surface.setResizable(true);
+  //surface.setSize(opencv.width, opencv.height);
+  opencv = new OpenCV(this, "test.jpg");
+  size(1080, 720);
+
+  opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE);  
+  faces = opencv.detect();
 }
 
 void draw() 
 {
-  if(cam.available())
-  {    
-    cam.read();
-    cam.loadPixels();
-    opencv.loadImage((PImage)cam);
-    image(opencv.getInput(), 0, 0);
+  //if(cam.available())
+  //{    
+  //  cam.read();
+  //  cam.loadPixels();
+  //  opencv.loadImage((PImage)cam);
+  //  image(opencv.getInput(), 0, 0);
+  image(opencv.getInput(), 0, 0);
+
+  noFill();
+  stroke(0, 255, 0);
+  strokeWeight(3);
+  for (int i = 0; i < faces.length; i++) {
+    rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
+  }
 
     // you should write most of your computer vision code here 
     
@@ -32,7 +48,7 @@ void draw()
     
     // end code
   }
-}
+
 
 void initCamera()
 {
